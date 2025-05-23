@@ -16,4 +16,8 @@ public interface IGameService
     Task SubmitGuessAsync(
         AddGuessInput input,
         CancellationToken cancellationToken);
+
+    Task<StandingsResult> CalculateStandings(
+        AddGuessInput incomingGuess,
+        CancellationToken cancellationToken);
 }

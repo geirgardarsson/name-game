@@ -2,31 +2,32 @@ using System.Collections.Concurrent;
 using System.Net.WebSockets;
 using System.Text;
 using System.Text.Json;
-using NameGame.Models.Requests;
+using NameGame.Models.Results;
+using NameGame.Websockets.Dispatchers.Interfaces;
 
 namespace NameGame.Websockets.Dispatchers;
 
-public class GuessDispatcher(
-    ILogger<GuessDispatcher> logger)
-    : IGuessDispatcher
+public class StandingsDispatcher(
+    ILogger<StandingsDispatcher> logger)
+    : IStandingsDispatcher
 {
-    private ILogger<GuessDispatcher> Logger { get; } = logger;
+    private ILogger<StandingsDispatcher> Logger { get; } = logger;
 
     private Dictionary<string, ConcurrentBag<WebSocket>> GameClients { get; } = [];
 
-    public async Task PublishGuessAsync(
-        AddGuessInput input,
+    public async Task PublishStandingsAsync(
+        StandingsResult standings,
         CancellationToken cancellationToken)
     {
-        if (!this.GameClients.TryGetValue(input.GameId, out var clients)
+        if (!this.GameClients.TryGetValue(standings.GameId, out var clients)
             || clients.IsEmpty)
         {
             return;
         }
 
-        this.Logger.LogInformation("Dispatching guess to {numclients} clients", clients.Count);
+        this.Logger.LogInformation("Dispatching standings to {numclients} clients", clients.Count);
 
-        var serialized = JsonSerializer.Serialize(input);
+        var serialized = JsonSerializer.Serialize(standings);
         var buffer = Encoding.UTF8.GetBytes(serialized);
 
         var subscriptionTasks = new List<Task>();
@@ -46,7 +47,7 @@ public class GuessDispatcher(
         await Task.WhenAll(subscriptionTasks);
     }
 
-    public async Task SubscribeToGuessesAsync(
+    public async Task SubscribeToStandingsAsync(
         string id,
         WebSocket webSocket,
         CancellationToken cancellationToken)
@@ -68,15 +69,15 @@ public class GuessDispatcher(
                 new ArraySegment<byte>(buffer),
                 cancellationToken);
 
-            if (result.MessageType is WebSocketMessageType.Close)
+            if (result.MessageType == WebSocketMessageType.Close)
             {
-                this.Logger.LogInformation("Closing websocket connection...");
+                this.Logger.LogInformation("Client closed connection.");
 
                 clients.TryTake(out _);
 
                 await webSocket.CloseAsync(
                     WebSocketCloseStatus.NormalClosure,
-                    "Closed by server",
+                    "Closing",
                     cancellationToken);
             }
         }

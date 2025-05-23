@@ -13,6 +13,7 @@ public class GameBackgroundService(
     ILogger<GameBackgroundService> logger,
     IGuessQueue guessQueue,
     IGuessDispatcher guessDispatcher,
+    IStandingsQueue standingsQueue,
     IDbContextFactory<NameGameDbContext> dbContextFactory)
     : BackgroundService
 {
@@ -22,11 +23,13 @@ public class GameBackgroundService(
 
     private IGuessDispatcher GuessDispatcher { get; } = guessDispatcher;
 
+    private IStandingsQueue StandingsQueue { get; } = standingsQueue;
+
     private NameGameDbContext DbContext { get; } = dbContextFactory.CreateDbContext();
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        Logger.LogInformation("Game Background Service is starting.");
+        Logger.LogInformation("Game background service is starting.");
 
         try
         {
@@ -46,7 +49,7 @@ public class GameBackgroundService(
         }
         catch (OperationCanceledException)
         {
-            Logger.LogInformation("Queue Processor Service is stopping.");
+            Logger.LogInformation("Game background service is stopping.");
         }
     }
 
@@ -71,5 +74,7 @@ public class GameBackgroundService(
         await this.DbContext.SaveChangesAsync(cancellationToken);
 
         await this.GuessDispatcher.PublishGuessAsync(input, cancellationToken);
+
+        await this.StandingsQueue.EnqueueUpdateStandingsAsync(input, cancellationToken);
     }
 }

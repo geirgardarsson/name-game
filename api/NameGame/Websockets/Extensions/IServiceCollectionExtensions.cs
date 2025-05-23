@@ -1,4 +1,5 @@
 using NameGame.Websockets.Dispatchers;
+using NameGame.Websockets.Dispatchers.Interfaces;
 using NameGame.Websockets.Services;
 
 namespace NameGame.Websockets.Extensions;
@@ -9,8 +10,9 @@ public static class IServiceCollectionExtensions
         this IServiceCollection services)
     {
         services
-        .AddSingleton<IGuessDispatcher, GuessDispatcher>()
-        .AddScoped<IWebSocketService, WebsocketService>();
+            .AddSingleton<IGuessDispatcher, GuessDispatcher>()
+            .AddSingleton<IStandingsDispatcher, StandingsDispatcher>()
+            .AddScoped<IWebSocketService, WebsocketService>();
 
         return services;
     }

@@ -15,7 +15,8 @@ public class GameService(
     ILogger<GameService> logger,
     IGuessDispatcher guessDispatcher,
     IGuessQueue guessQueue,
-    NameGameDbContext dbContext)
+    NameGameDbContext dbContext,
+    IConfiguration configuration)
     : IGameService
 {
     private ILogger<GameService> Logger { get; } = logger;
@@ -25,6 +26,11 @@ public class GameService(
     private IGuessQueue GuessQueue { get; } = guessQueue;
 
     private NameGameDbContext DbContext { get; } = dbContext;
+
+    private IConfiguration Configuration { get; } = configuration;
+
+    private int TopPlayersLimit { get; }
+        = configuration.GetValue<int?>("TopPlayersLimit") ?? 10;
 
     public async Task<CreateGameResult> CreateGameAsync(
         CreateGameRepuest createGameRepuest,
@@ -71,5 +77,27 @@ public class GameService(
         await GuessDispatcher.PublishGuessAsync(input, cancellationToken);
 
         await GuessQueue.EnqueueGuessAsync(input, cancellationToken);
+    }
+
+    public async Task<StandingsResult> CalculateStandings(
+        AddGuessInput incomingGuess,
+        CancellationToken cancellationToken)
+    {
+        this.Logger.LogInformation(
+            "calculating standings. top player limit is {limit}",
+            this.TopPlayersLimit);
+
+        var topGuesses = await this.DbContext.Guesses
+            .Where(g => g.GameId == incomingGuess.GameId)
+            .OrderByDescending(g => g.Score)
+            .Take(this.TopPlayersLimit)
+            .Select(g => new GuessResult(
+                g.Id,
+                g.User,
+                g.Guess,
+                g.Score))
+            .ToListAsync(cancellationToken: cancellationToken);
+
+        return new StandingsResult(incomingGuess.GameId, topGuesses);
     }
 }

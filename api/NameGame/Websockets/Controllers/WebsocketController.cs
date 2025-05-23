@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using NameGame.Websockets.Dispatchers;
+using NameGame.Websockets.Dispatchers.Interfaces;
 using NameGame.Websockets.Services;
 
 namespace NameGame.Websockets.Controllers;
@@ -18,20 +19,38 @@ public class WebsocketController(
         [FromServices] IGuessDispatcher dispatcher,
         CancellationToken cancellationToken)
     {
-        var webSocket = await this.WebSocketService.AcceptWebSocketAsync(this.HttpContext);
+        var webSocket = await this.WebSocketService.AcceptWebSocketAsync(
+            this.HttpContext);
 
         if (webSocket is null)
         {
             return;
         }
 
-        await dispatcher.SubscribeToGuessesAsync(id, webSocket, cancellationToken);
+        await dispatcher.SubscribeToGuessesAsync(
+            id,
+            webSocket,
+            cancellationToken);
     }
 
     [HttpGet("game/{id}/standings")]
-    public Task SubscribeToStandingsAsync(string id)
+    public async Task SubscribeToStandingsAsync(
+        string id,
+        [FromServices] IStandingsDispatcher dispatcher,
+        CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var webSocket = await this.WebSocketService.AcceptWebSocketAsync(
+            this.HttpContext);
+
+        if (webSocket is null)
+        {
+            return;
+        }
+
+        await dispatcher.SubscribeToStandingsAsync(
+            id,
+            webSocket,
+            cancellationToken);
     }
 
     [HttpGet("game/{id}/status")]

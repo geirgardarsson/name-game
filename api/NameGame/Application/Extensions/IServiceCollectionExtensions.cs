@@ -12,7 +12,9 @@ public static class IServiceCollectionExtensions
     {
         services
             .AddSingleton<IGuessQueue, GuessQueue>()
+            .AddSingleton<IStandingsQueue, StandingsQueue>()
             .AddHostedService<GameBackgroundService>()
+            .AddHostedService<StandingsBackgroundService>()
             .AddScoped<IGameService, GameService>();
 
         return services;

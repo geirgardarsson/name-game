@@ -1,11 +1,10 @@
-
 using System.Threading.Channels;
 using NameGame.Application.Queues.Interfaces;
 using NameGame.Models.Requests;
 
 namespace NameGame.Application.Queues;
 
-public class GuessQueue : IGuessQueue
+public class StandingsQueue : IStandingsQueue
 {
     private readonly Channel<AddGuessInput> _channel =
         Channel.CreateUnbounded<AddGuessInput>(
@@ -15,11 +14,11 @@ public class GuessQueue : IGuessQueue
                 SingleWriter = false
             });
 
-    public ValueTask EnqueueGuessAsync(
-        AddGuessInput input,
+    public ValueTask EnqueueUpdateStandingsAsync(
+        AddGuessInput incomingGuess,
         CancellationToken cancellationToken)
     {
-        return _channel.Writer.WriteAsync(input, cancellationToken);
+        return _channel.Writer.WriteAsync(incomingGuess, cancellationToken);
     }
 
     public IAsyncEnumerable<AddGuessInput> ReadAllAsync(
