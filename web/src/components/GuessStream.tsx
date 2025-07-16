@@ -1,4 +1,3 @@
-// components/GuessStream.tsx
 import React from "react";
 import getScoreColor from "./ScoreColor";
 import { useGame } from "@/context/GameContext";
@@ -9,7 +8,7 @@ export default function GuessStream() {
   } = useGame();
 
   const wrapperClass =
-    "bg-white rounded-xl shadow p-4 w-full max-w-xl max-h-full overflow-y-hidden";
+    "m-auto bg-white rounded-xl shadow p-4 w-full max-w-xl max-h-full overflow-y-hidden";
 
   if (error) {
     console.error("Error loading guesses:", error);

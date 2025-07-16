@@ -10,7 +10,7 @@ export default function GameDisplay() {
 
   return (
     <GameProvider gameId={gameId}>
-      <div className="flex flex-col md:flex-row items-stretch justify-center gap-12 p-6 max-h-screen bg-gradient-to-br from-yellow-100 to-pink-200 w-full max-w-none">
+      <div className="flex flex-col md:flex-row items-stretch justify-center gap-12 p-6 min-h-screen bg-gradient-to-br from-yellow-100 to-pink-200 w-full max-w-none">
         <div className="flex flex-col gap-12 md:w-1/2 w-full max-w-xl justify-start">
           <div className="w-full max-w-2xl mb-8">
             <GameStatus displayQR={true} />
