@@ -1,7 +1,6 @@
 using System.Threading.Channels;
 using NameGame.Application.Queues.Interfaces;
 using NameGame.Models.Messages;
-using NameGame.Models.Results;
 
 namespace NameGame.Application.Queues;
 

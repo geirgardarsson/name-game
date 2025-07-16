@@ -104,6 +104,7 @@ public class GameBackgroundService(
                 new GameEvent
                 {
                     GameId = game.Id,
+                    GameHandle = game.Handle,
                     Event = GameEventType.GameFinished,
                     Guess = guessResult
                 },

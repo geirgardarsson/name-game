@@ -57,6 +57,7 @@ public class StatusBackgroundService(
         {
             return new GameStatusResult(
                 gameEvent.GameId,
+                gameEvent.GameHandle,
                 GameStatus.Active);
         }
 
@@ -66,6 +67,7 @@ public class StatusBackgroundService(
 
         return new GameStatusResult(
             gameEvent.GameId,
+            gameEvent.GameHandle,
             GameStatus.Finished,
             winner);
     }

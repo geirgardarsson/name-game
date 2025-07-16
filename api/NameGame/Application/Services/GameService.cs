@@ -170,7 +170,7 @@ public class GameService(
 
         if (game.Status != GameStatus.Finished)
         {
-            return new GameStatusResult(game.Id, game.Status, winner);
+            return new GameStatusResult(game.Id, game.Handle, game.Status, winner);
         }
 
         var topGuess = await this.DbContext.Guesses
@@ -181,11 +181,11 @@ public class GameService(
         {
             this.Logger.LogWarning("Game is finished but no top guess found. Game ID: {gameId}", id);
 
-            return new GameStatusResult(game.Id, game.Status, winner);
+            return new GameStatusResult(game.Id, game.Handle, game.Status, winner);
         }
 
         winner = new WinnerResult(topGuess.User, game.Answer);
 
-        return new GameStatusResult(game.Id, game.Status, winner);
+        return new GameStatusResult(game.Id, game.Handle, game.Status, winner);
     }
 }

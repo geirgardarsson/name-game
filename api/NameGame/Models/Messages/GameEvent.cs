@@ -7,6 +7,8 @@ public class GameEvent
 {
     public required string GameId { get; set; }
 
+    public string? GameHandle { get; set; }
+
     public required GameEventType Event { get; set; }
 
     public GuessResult? Guess { get; set; }
