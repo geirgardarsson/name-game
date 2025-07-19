@@ -41,7 +41,7 @@ export default function GameStatus({ displayQR = false }: GameStatusProps) {
             zIndex: 50,
           }}
         />
-        <div className="text-5xl font-extrabold text-green-600 drop-shadow mb-4 animate-bounce">
+        <div className="whitespace-nowrap text-3xl sm:text-4xl font-extrabold text-green-600 drop-shadow mb-4 animate-bounce">
           🎉 Winner: {data.winner.winner} 🎉
         </div>
         <div className="text-3xl font-bold text-blue-500 mb-2 animate-pulse">
