@@ -49,15 +49,6 @@ export default function GameStatus({ displayQR = false }: GameStatusProps) {
           <span className="underline">{data.winner.answer}</span>
         </div>
         <div className="text-xl text-gray-700 mt-4">Game finished!</div>
-        {displayQR && gameId && (
-          <div className="mt-6 flex flex-col items-center">
-            <div className="mb-2 text-lg font-medium">Join this game:</div>
-            <QRCode
-              value={`${window.location.origin}/play/${gameId}`}
-              size={160}
-            />
-          </div>
-        )}
       </div>
     );
   }

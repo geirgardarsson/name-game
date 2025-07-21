@@ -17,7 +17,7 @@ export default function GameDisplay() {
           </div>
           <StandingsPanel />
         </div>
-        <div className="md:w-1/2 w-full flex max-w-none h-auto max-h-full">
+        <div className="md:w-1/2 w-full flex max-w-none">
           <GuessStream />
         </div>
       </div>

@@ -8,7 +8,7 @@ export default function GuessStream() {
   } = useGame();
 
   const wrapperClass =
-    "m-auto bg-white rounded-xl shadow p-4 w-full max-w-xl overflow-y-hidden max-h-screen";
+    "m-auto bg-white rounded-xl shadow p-4 w-full max-w-xl overflow-y-hidden h-full";
 
   if (error) {
     console.error("Error loading guesses:", error);
