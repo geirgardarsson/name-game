@@ -1,15 +1,13 @@
-// components/GuessForm.tsx
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import React, { useRef, useEffect, useState } from "react";
 import { API_URL } from "@/config";
 import { useGame } from "@/context/GameContext";
 
-// Props now include gameId and username
 interface GuessFormProps {
   gameId: string;
   username: string;
-  onGuessSubmitted?: () => void; // Optional callback
+  onGuessSubmitted?: () => void;
 }
 
 export default function GuessForm({
@@ -24,7 +22,6 @@ export default function GuessForm({
   const { status } = useGame();
   const { data, isLoading } = status;
 
-  // Load names.txt once
   useEffect(() => {
     async function loadNames() {
       try {
@@ -39,7 +36,6 @@ export default function GuessForm({
     loadNames();
   }, []);
 
-  // Focus input when guess is cleared
   useEffect(() => {
     if (guess === "" && inputRef.current) {
       inputRef.current.focus();
@@ -54,7 +50,6 @@ export default function GuessForm({
       body: JSON.stringify({ user: username, guess }),
     });
     if (!res.ok) {
-      // handle error, show message
       console.error("Failed to submit guess", res.statusText);
     } else {
       setGuess("");

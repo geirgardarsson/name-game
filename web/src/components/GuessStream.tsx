@@ -2,7 +2,11 @@ import React from "react";
 import getScoreColor from "./ScoreColor";
 import { useGame } from "@/context/GameContext";
 
-export default function GuessStream() {
+interface GuessStreamProps {
+  maxGuesses?: number;
+}
+
+export default function GuessStream({ maxGuesses = 50 }: GuessStreamProps) {
   const {
     guesses: { data, isLoading, error },
   } = useGame();
@@ -31,9 +35,8 @@ export default function GuessStream() {
     <div className={wrapperClass}>
       <h2 className="text-xl font-semibold mb-2">Recent Guesses</h2>
       <ul className="space-y-1">
-        {[...data.slice(-50)]
-          // .reverse()
-          .map(({ id, user, guess, scorePercent }) => (
+        {[...data.slice(-maxGuesses)].map(
+          ({ id, user, guess, scorePercent }) => (
             <li
               key={id}
               className="flex justify-between items-center border-b border-gray-100 pb-1 px-2 rounded-lg transition-all duration-200 hover:bg-gray-50"
@@ -45,7 +48,8 @@ export default function GuessStream() {
                 {scorePercent.toFixed(2)}%
               </div>
             </li>
-          ))}
+          )
+        )}
       </ul>
     </div>
   );

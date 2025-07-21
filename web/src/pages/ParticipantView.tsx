@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import StandingsPanel from "@/components/StandingsPanel";
 import GuessStream from "@/components/GuessStream";
@@ -10,6 +10,8 @@ import GameStatus from "@/components/GameStatus";
 
 export default function ParticipantView() {
   const { gameId } = useParams<{ gameId: string }>();
+  const [searchParams] = useSearchParams();
+  const maxGuesses = Number(searchParams.get("maxGuesses")) || 5;
 
   if (!gameId) {
     throw new Error("Game ID is missing from the route.");
@@ -19,8 +21,8 @@ export default function ParticipantView() {
 
   return (
     <GameProvider gameId={gameId}>
-      <div className="flex flex-col items-center gap-4 p-2 min-h-screen bg-gradient-to-br from-green-100 to-blue-200 sm:p-6">
-        <div className="w-full max-w-full sm:max-w-md space-y-4 px-0 sm:px-0">
+      <div className="flex flex-col items-center gap-2 p-2 min-h-screen bg-gradient-to-br from-green-100 to-blue-200 sm:p-6">
+        <div className="w-full max-w-full sm:max-w-md space-y-2 px-0 sm:px-0">
           <GameStatus />
           {!username || isEditing ? (
             <UsernameForm
@@ -31,9 +33,9 @@ export default function ParticipantView() {
               initialValue={username}
             />
           ) : (
-            <div className="w-full space-y-4">
-              <StandingsPanel />
-              <GuessStream />
+            <div className="w-full space-y-2">
+              <StandingsPanel maxResults={5} />
+              <GuessStream maxGuesses={maxGuesses} />
               <GuessForm gameId={gameId} username={username} />
               <div className="flex items-center ml-2 text-lg font-bold">
                 <div
