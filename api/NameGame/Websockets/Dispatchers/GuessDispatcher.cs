@@ -30,14 +30,14 @@ public class GuessDispatcher(
         if (!this.GameClients.TryGetValue(guess.GameId, out var clients)
             || clients.IsEmpty)
         {
-            this.Logger.LogInformation(
+            this.Logger.LogDebug(
                 "No clients subscribed to game {GameId} for guesses",
                 guess.GameId);
 
             return;
         }
 
-        this.Logger.LogInformation("Dispatching guess to {numclients} clients", clients.Count);
+        this.Logger.LogDebug("Dispatching guess to {numclients} clients", clients.Count);
 
         var serialized = JsonSerializer.Serialize(
             guess,
@@ -67,7 +67,7 @@ public class GuessDispatcher(
         WebSocket webSocket,
         CancellationToken cancellationToken)
     {
-        this.Logger.LogInformation("Receiving new websocket connection.");
+        this.Logger.LogDebug("Receiving new websocket connection.");
 
         if (!this.GameClients.TryGetValue(id, out var clients))
         {
@@ -88,7 +88,7 @@ public class GuessDispatcher(
 
             if (result.MessageType is WebSocketMessageType.Close)
             {
-                this.Logger.LogInformation("Closing websocket connection...");
+                this.Logger.LogDebug("Closing websocket connection...");
 
                 clients.TryTake(out _);
 

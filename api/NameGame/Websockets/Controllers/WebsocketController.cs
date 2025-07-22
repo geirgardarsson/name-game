@@ -22,7 +22,7 @@ public class WebsocketController(
         [FromServices] IGuessDispatcher dispatcher,
         CancellationToken cancellationToken)
     {
-        this.Logger.LogInformation(
+        this.Logger.LogDebug(
             "Websocket request to subscribe to guesses for game {GameId}",
             id);
 
@@ -49,7 +49,7 @@ public class WebsocketController(
         [FromServices] IStandingsDispatcher dispatcher,
         CancellationToken cancellationToken)
     {
-        this.Logger.LogInformation(
+        this.Logger.LogDebug(
             "Websocket request to subscribe to standings for game {GameId}",
             id);
 
@@ -77,7 +77,7 @@ public class WebsocketController(
         [FromServices] IStatusDispatcher dispatcher,
         CancellationToken cancellationToken)
     {
-        this.Logger.LogInformation(
+        this.Logger.LogDebug(
             "Websocket request to subscribe to game status for game {GameId}",
             id);
 

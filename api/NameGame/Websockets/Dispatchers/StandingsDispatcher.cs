@@ -31,13 +31,13 @@ public class StandingsDispatcher(
         if (!this.GameClients.TryGetValue(standings.GameId, out var clients)
             || clients.IsEmpty)
         {
-            this.Logger.LogInformation(
+            this.Logger.LogDebug(
                 "No clients subscribed to standings for game {gameId}.",
                 standings.GameId);
             return;
         }
 
-        this.Logger.LogInformation("Dispatching standings to {numclients} clients", clients.Count);
+        this.Logger.LogDebug("Dispatching standings to {numclients} clients", clients.Count);
 
         var serialized = JsonSerializer.Serialize(
             standings,
@@ -67,7 +67,7 @@ public class StandingsDispatcher(
         WebSocket webSocket,
         CancellationToken cancellationToken)
     {
-        this.Logger.LogInformation("Receiving new websocket connection for standings subscription.");
+        this.Logger.LogDebug("Receiving new websocket connection for standings subscription.");
 
         if (!this.GameClients.TryGetValue(id, out var clients))
         {
@@ -78,7 +78,7 @@ public class StandingsDispatcher(
 
         this.GameClients[id] = clients;
 
-        this.Logger.LogInformation(
+        this.Logger.LogDebug(
             "Subscribed client to standings for game {gameId}. Total clients: {numClients}",
             id,
             clients.Count);
@@ -93,7 +93,7 @@ public class StandingsDispatcher(
 
             if (result.MessageType == WebSocketMessageType.Close)
             {
-                this.Logger.LogInformation("Client closed connection.");
+                this.Logger.LogDebug("Client closed connection.");
 
                 clients.TryTake(out _);
 
