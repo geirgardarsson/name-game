@@ -2,6 +2,20 @@ import React from "react";
 import getScoreColor from "./ScoreColor";
 import { useGame } from "@/context/GameContext";
 
+// Helper to generate a random pastel background and a strong font color
+function getRandomColorPair(seed: string) {
+  // Simple hash from string to int
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) {
+    hash = seed.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  // Generate HSL color
+  const hue = Math.abs(hash) % 360;
+  const pastel = `hsl(${hue}, 80%, 92%)`;
+  const strong = `hsl(${hue}, 80%, 35%)`;
+  return { pastel, strong };
+}
+
 interface GuessStreamProps {
   maxGuesses?: number;
 }
@@ -36,25 +50,46 @@ export default function GuessStream({ maxGuesses = 50 }: GuessStreamProps) {
       <h2 className="text-xl font-semibold mb-2">Recent Guesses</h2>
       <ul className="space-y-1">
         {[...data.slice(0, maxGuesses)].map(
-          ({ id, user, guess, scorePercent }) => (
-            <li
-              key={id}
-              className="flex justify-between items-center border-b border-gray-100 pb-1 px-2 rounded-lg transition-all duration-200 bg-blue-50/70 hover:bg-blue-100/60 animate-bounce-in"
-            >
-              <div>
-                <span className="font-playful font-semibold text-base md:text-lg">
-                  {user}
-                </span>
-                <span className="mx-1 text-gray-400 font-medium">:</span>
-                <span className="font-playful text-base md:text-lg font-light">
-                  {guess}
-                </span>
-              </div>
-              <div className={`font-semibold ${getScoreColor(scorePercent)}`}>
-                {scorePercent.toFixed(2)}%
-              </div>
-            </li>
-          )
+          ({ id, user, guess, scorePercent }) => {
+            const { pastel, strong } = getRandomColorPair(id + user + guess);
+            return (
+              <li
+                key={id}
+                className="flex justify-between items-center border-b border-gray-100 pb-1 px-2 rounded-lg transition-all duration-200 animate-bounce-in"
+                style={{ background: pastel }}
+              >
+                <div>
+                  <span
+                    className="font-playful font-semibold text-base md:text-lg"
+                    style={{ color: strong }}
+                  >
+                    {user}
+                  </span>
+                  <span
+                    className="mx-1 font-medium"
+                    style={{ color: strong, opacity: 0.6 }}
+                  >
+                    :
+                  </span>
+                  <span
+                    className="font-playful text-base md:text-lg font-light"
+                    style={{ color: strong }}
+                  >
+                    {guess}
+                  </span>
+                </div>
+                <div
+                  className={`font-semibold ${getScoreColor(scorePercent)}`}
+                  style={{
+                    textShadow:
+                      "0 1px 4px rgba(0,0,0,0.13), 0 0px 1px rgba(0,0,0,0.10)",
+                  }}
+                >
+                  {scorePercent.toFixed(2)}%
+                </div>
+              </li>
+            );
+          }
         )}
       </ul>
     </div>
