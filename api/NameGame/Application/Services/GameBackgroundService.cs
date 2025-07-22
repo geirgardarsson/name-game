@@ -35,7 +35,7 @@ public class GameBackgroundService(
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        Logger.LogInformation("Game background service is starting.");
+        Logger.LogDebug("Game background service is starting.");
 
         try
         {
@@ -45,7 +45,7 @@ public class GameBackgroundService(
                 {
                     await this.HandleGuessAsync(item, stoppingToken);
 
-                    Logger.LogInformation("Item stored in database. Guess: {guess}", item.Guess);
+                    Logger.LogDebug("Item stored in database. Guess: {guess}", item.Guess);
                 }
                 catch (Exception ex)
                 {

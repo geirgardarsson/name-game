@@ -117,7 +117,7 @@ public class GameService(
         AddGuessInput input,
         CancellationToken cancellationToken)
     {
-        this.Logger.LogInformation("Receiving a new guess. {user} guessed: {guess}", input.User, input.Guess);
+        this.Logger.LogDebug("Receiving a new guess. {user} guessed: {guess}", input.User, input.Guess);
 
         var game = await this.DbContext.Games
             .FirstOrDefaultAsync(g => g.Id == input.GameId, cancellationToken)

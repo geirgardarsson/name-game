@@ -30,7 +30,7 @@ public class StandingsBackgroundService(
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        this.Logger.LogInformation("Standings background service is starting.");
+        this.Logger.LogDebug("Standings background service is starting.");
 
         try
         {
@@ -48,7 +48,7 @@ public class StandingsBackgroundService(
         }
         catch (OperationCanceledException)
         {
-            this.Logger.LogInformation("Standings background service is stopping");
+            this.Logger.LogDebug("Standings background service is stopping");
         }
     }
 
@@ -78,7 +78,7 @@ public class StandingsBackgroundService(
             this.Standings[newGuess.GameId] = currentStandings;
         }
 
-        this.Logger.LogInformation("Publishing standings.");
+        this.Logger.LogDebug("Publishing standings.");
 
         await this.StandingsDispatcher.PublishStandingsAsync(
             currentStandings,

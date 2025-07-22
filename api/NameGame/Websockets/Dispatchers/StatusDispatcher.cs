@@ -27,11 +27,11 @@ public class StatusDispatcher(
     {
         if (!this.GameClients.TryGetValue(status.GameId, out var clients) || clients.IsEmpty)
         {
-            this.Logger.LogInformation("No clients subscribed to status for game {gameId}.", status.GameId);
+            this.Logger.LogDebug("No clients subscribed to status for game {gameId}.", status.GameId);
             return;
         }
 
-        this.Logger.LogInformation("Dispatching status to {numClients} clients", clients.Count);
+        this.Logger.LogDebug("Dispatching status to {numClients} clients", clients.Count);
 
         var serialized = JsonSerializer.Serialize(status, this.JsonSerializerOptions);
         var buffer = Encoding.UTF8.GetBytes(serialized);
@@ -55,7 +55,7 @@ public class StatusDispatcher(
 
     public async Task SubscribeToGameStatusAsync(string gameId, WebSocket webSocket, CancellationToken cancellationToken)
     {
-        this.Logger.LogInformation("Receiving new websocket connection for status subscription.");
+        this.Logger.LogDebug("Receiving new websocket connection for status subscription.");
 
         if (!this.GameClients.TryGetValue(gameId, out var clients))
         {
@@ -66,7 +66,7 @@ public class StatusDispatcher(
 
         this.GameClients[gameId] = clients;
 
-        this.Logger.LogInformation(
+        this.Logger.LogDebug(
             "Subscribed client to status for game {gameId}. Total clients: {numClients}",
             gameId,
             clients.Count);
@@ -79,7 +79,7 @@ public class StatusDispatcher(
 
             if (result.MessageType == WebSocketMessageType.Close)
             {
-                this.Logger.LogInformation("Client closed connection.");
+                this.Logger.LogDebug("Client closed connection.");
                 clients.TryTake(out _);
 
                 await webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closing", cancellationToken);

@@ -20,7 +20,7 @@ public class StatusBackgroundService(
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        this.Logger.LogInformation("Status background service is starting.");
+        this.Logger.LogDebug("Status background service is starting.");
 
         try
         {
@@ -28,7 +28,7 @@ public class StatusBackgroundService(
             {
                 try
                 {
-                    this.Logger.LogInformation(
+                    this.Logger.LogDebug(
                         "Processing game event. Type: {eventType}, GameId: {gameId}",
                         gameEvent.Event,
                         gameEvent.GameId);
@@ -47,7 +47,7 @@ public class StatusBackgroundService(
         }
         catch (OperationCanceledException)
         {
-            this.Logger.LogInformation("Status background service is stopping.");
+            this.Logger.LogDebug("Status background service is stopping.");
         }
     }
 
