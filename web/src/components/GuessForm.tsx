@@ -1,5 +1,6 @@
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
+import { GiInvertedDice6 } from "react-icons/gi";
 import React, { useRef, useEffect, useState } from "react";
 import { API_URL } from "@/config";
 import { useGame } from "@/context/GameContext";
@@ -73,22 +74,26 @@ export default function GuessForm({
       }}
       className="flex gap-2"
     >
-      <Input
-        inputRef={inputRef}
-        value={guess}
-        onChange={(e) => setGuess(e.target.value)}
-        placeholder="Your guess"
-        className="flex-1"
-        disabled={disabled}
-      />
-      <Button
-        type="button"
-        className="bg-blue-500 text-white hover:bg-blue-600"
-        onClick={randomizeGuess}
-        disabled={disabled}
-      >
-        Random
-      </Button>
+      <div className="relative flex-1">
+        <Input
+          inputRef={inputRef}
+          value={guess}
+          onChange={(e) => setGuess(e.target.value)}
+          placeholder="Your guess"
+          className="pr-10" // add right padding for the icon button
+          disabled={disabled}
+        />
+        <button
+          type="button"
+          onClick={randomizeGuess}
+          disabled={disabled}
+          tabIndex={-1}
+          className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-gray-700 hover:text-gray-800 disabled:text-gray-300 bg-transparent border-none focus:outline-none"
+          aria-label="Randomize guess"
+        >
+          <GiInvertedDice6 size={24} />
+        </button>
+      </div>
       <Button type="submit" disabled={disabled}>
         Guess
       </Button>
