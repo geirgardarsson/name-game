@@ -54,15 +54,12 @@ app.UseMiddleware<ExceptionMiddleware>();
 app.MapControllers();
 
 // Enable Swagger middleware
-if (app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI(options =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(options =>
-    {
-        // Set Swagger UI to the root URL
-        options.SwaggerEndpoint("/swagger/v1/swagger.json", "Game API v1");
-        options.RoutePrefix = string.Empty; // This makes Swagger UI available at the root
-    });
-}
+    // Set Swagger UI to the root URL
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "Game API v1");
+    options.RoutePrefix = string.Empty; // This makes Swagger UI available at the root
+});
 
 app.Run();
