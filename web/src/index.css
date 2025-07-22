@@ -1,3 +1,31 @@
+@import url("https://fonts.googleapis.com/css2?family=Goldman:wght@400;700&family=Lilita+One&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Gabriela&family=Goldman:wght@400;700&family=Lilita+One&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.font-playful {
+  font-family: "Gabriela", sans-serif;
+}
+
+@keyframes bounce-in {
+  0% {
+    transform: scale(0.7);
+    opacity: 0.2;
+  }
+  60% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+  80% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-bounce-in {
+  animation: bounce-in 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}

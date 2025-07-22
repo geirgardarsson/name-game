@@ -39,54 +39,48 @@ export default function StandingsPanel({ maxResults }: StandingsPanelProps) {
           .map(({ id, user, guess, scorePercent }, idx) => {
             // Fancy number indicators for 1st, 2nd, 3rd
             let placeIndicator = null;
-            let placeBg = "";
-            let placeText = "";
+            let bgClass = "";
             if (idx === 0) {
               placeIndicator = (
                 <span className="inline-block w-7 h-7 mr-3 rounded-full bg-gradient-to-tr from-yellow-300 via-yellow-200 to-lime-200 text-yellow-900 font-extrabold text-lg flex items-center justify-center shadow-md border-2 border-yellow-400 animate-pulse">
                   🥇
                 </span>
               );
-              placeBg =
-                "bg-[radial-gradient(circle,rgba(255,255,120,0.7)_0%,rgba(255,255,0,0.2)_100%)] border-yellow-300";
-              placeText = "text-yellow-700";
+              bgClass = "bg-yellow-100/80 border-yellow-200";
             } else if (idx === 1) {
               placeIndicator = (
                 <span className="inline-block w-7 h-7 mr-3 rounded-full bg-gradient-to-tr from-gray-700 to-gray-400 text-gray-900 font-extrabold text-lg flex items-center justify-center shadow-md border-2 border-gray-400">
                   🥈
                 </span>
               );
-              placeBg = "bg-gray-300 border-gray-300";
-              placeText = "text-gray-700";
+              bgClass = "bg-gray-300 border-gray-300";
             } else if (idx === 2) {
               placeIndicator = (
                 <span className="inline-block w-7 h-7 mr-3 rounded-full bg-gradient-to-tr from-amber-400 via-amber-200 to-pink-200 text-amber-900 font-extrabold text-lg flex items-center justify-center shadow-md border-2 border-amber-400">
                   🥉
                 </span>
               );
-              placeBg =
-                "bg-[radial-gradient(circle,rgba(255,180,80,0.7)_0%,rgba(255,120,0,0.15)_100%)] border-amber-300";
-              placeText = "text-amber-700";
+              bgClass = "bg-orange-100/80 border-orange-200";
+            } else {
+              bgClass = "bg-blue-50/70 border-blue-100";
             }
             return (
               <li
                 key={id}
-                className={`flex justify-between items-center border-b border-gray-100 pb-1 px-2 rounded-lg transition-all duration-200 ${
-                  idx < 3
-                    ? `${placeBg} ${placeText} font-bold scale-105 shadow`
-                    : "hover:bg-gray-50"
-                }`}
+                className={`flex justify-between items-center border-b border-gray-100 pb-1 px-2 rounded-lg transition-all duration-200 ${bgClass} ${
+                  idx < 3 ? "scale-105 shadow" : "hover:bg-blue-100/60"
+                } animate-bounce-in`}
                 style={
                   idx < 3 ? { boxShadow: "0 2px 8px 0 rgba(0,0,0,0.08)" } : {}
                 }
               >
                 <div className="flex items-center">
                   {placeIndicator}
-                  <span className="font-medium text-base md:text-lg">
+                  <span className="font-playful font-medium text-base md:text-lg">
                     {user}
                   </span>
                   <span className="mx-1 text-gray-400 font-light">:</span>
-                  <span className="text-base md:text-lg font-semibold">
+                  <span className="font-playful text-base md:text-lg">
                     {guess}
                   </span>
                 </div>

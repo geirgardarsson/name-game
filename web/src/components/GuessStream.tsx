@@ -39,10 +39,16 @@ export default function GuessStream({ maxGuesses = 50 }: GuessStreamProps) {
           ({ id, user, guess, scorePercent }) => (
             <li
               key={id}
-              className="flex justify-between items-center border-b border-gray-100 pb-1 px-2 rounded-lg transition-all duration-200 hover:bg-gray-50"
+              className="flex justify-between items-center border-b border-gray-100 pb-1 px-2 rounded-lg transition-all duration-200 bg-blue-50/70 hover:bg-blue-100/60 animate-bounce-in"
             >
               <div>
-                <strong>{user}</strong>: {guess}
+                <span className="font-playful font-semibold text-base md:text-lg">
+                  {user}
+                </span>
+                <span className="mx-1 text-gray-400 font-medium">:</span>
+                <span className="font-playful text-base md:text-lg font-light">
+                  {guess}
+                </span>
               </div>
               <div className={`font-semibold ${getScoreColor(scorePercent)}`}>
                 {scorePercent.toFixed(2)}%
