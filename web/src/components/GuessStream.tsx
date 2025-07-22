@@ -48,38 +48,36 @@ export default function GuessStream({ maxGuesses = 50 }: GuessStreamProps) {
   return (
     <div className={wrapperClass}>
       <h2 className="text-xl font-semibold mb-2">Recent Guesses</h2>
-      <ul className="space-y-1">
+      <ul className="space-y-1 overflow-x-hidden">
         {[...data.slice(0, maxGuesses)].map(
           ({ id, user, guess, scorePercent }) => {
             const { pastel, strong } = getRandomColorPair(id + user + guess);
             return (
               <li
                 key={id}
-                className="flex justify-between items-center border-b border-gray-100 pb-1 px-2 rounded-lg transition-all duration-200 animate-bounce-in"
+                className="grid grid-cols-4 gap-2 items-center border-b border-gray-100 pb-1 px-2 rounded-lg transition-all duration-200 animate-bounce-in shadow"
                 style={{ background: pastel }}
               >
-                <div>
+                <div className="col-span-1 flex items-center min-w-0">
                   <span
                     className="font-playful font-semibold text-base md:text-lg"
                     style={{ color: strong }}
                   >
                     {user}
                   </span>
+                </div>
+                <div className="col-span-2 flex items-center min-w-0">
                   <span
-                    className="mx-1 font-medium"
-                    style={{ color: strong, opacity: 0.6 }}
-                  >
-                    :
-                  </span>
-                  <span
-                    className="font-playful text-base md:text-lg font-light"
+                    className="m-auto font-playful text-base md:text-lg font-light"
                     style={{ color: strong }}
                   >
                     {guess}
                   </span>
                 </div>
                 <div
-                  className={`font-semibold ${getScoreColor(scorePercent)}`}
+                  className={`col-span-1 flex justify-end font-semibold ${getScoreColor(
+                    scorePercent
+                  )}`}
                   style={{
                     textShadow:
                       "0 1px 4px rgba(0,0,0,0.13), 0 0px 1px rgba(0,0,0,0.10)",
