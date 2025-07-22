@@ -56,7 +56,7 @@ export default function StandingsPanel({ maxResults }: StandingsPanelProps) {
                   🥈
                 </span>
               );
-              placeBg = "bg-gray-50 border-gray-300";
+              placeBg = "bg-gray-300 border-gray-300";
               placeText = "text-gray-700";
             } else if (idx === 2) {
               placeIndicator = (
