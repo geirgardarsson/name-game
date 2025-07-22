@@ -63,7 +63,9 @@ public class StandingsBackgroundService(
 
         var lowestScore = currentStandings?.TopGuesses.LastOrDefault()?.Score;
 
-        if (currentStandings is null || newGuess.Score > lowestScore)
+        if (currentStandings is null
+            || newGuess.Score > lowestScore
+            || currentStandings.TopGuesses.Count < this.TopPlayersLimit)
         {
             this.Logger.LogInformation("New guess score {score} is higher than the lowest score {lowestScore}. Recalculating standings.",
                 newGuess.Score, lowestScore);
