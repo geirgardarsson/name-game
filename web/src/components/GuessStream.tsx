@@ -2,19 +2,7 @@ import React from "react";
 import getScoreColor from "./ScoreColor";
 import { useGame } from "@/context/GameContext";
 
-// Helper to generate a random pastel background and a strong font color
-function getRandomColorPair(seed: string) {
-  // Simple hash from string to int
-  let hash = 0;
-  for (let i = 0; i < seed.length; i++) {
-    hash = seed.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  // Generate HSL color
-  const hue = Math.abs(hash) % 360;
-  const pastel = `hsl(${hue}, 80%, 92%)`;
-  const strong = `hsl(${hue}, 80%, 35%)`;
-  return { pastel, strong };
-}
+import { getRandomColorPair } from "./ColorUtils";
 
 interface GuessStreamProps {
   maxGuesses?: number;

@@ -1,5 +1,6 @@
 import React from "react";
 import getScoreColor from "./ScoreColor";
+import { getRandomColorPair } from "./ColorUtils";
 import { useGame } from "@/context/GameContext";
 
 interface StandingsPanelProps {
@@ -56,15 +57,7 @@ export default function StandingsPanel({ maxResults }: StandingsPanelProps) {
     return null;
   }
 
-  // Helper to get background class
-  function getBgClass(idx: number) {
-    if (idx === 0) return "bg-yellow-100/80 border-yellow-200";
-    if (idx === 1) return "bg-gray-300 border-gray-300";
-    if (idx === 2) return "bg-orange-100/80 border-orange-200";
-    return "bg-blue-50/70 border-blue-100";
-  }
-
-  // Helper to get li style
+  // Helper to get li style for top 3
   function getLiStyle(idx: number) {
     return idx < 3 ? { boxShadow: "0 2px 8px 0 rgba(0,0,0,0.08)" } : {};
   }
@@ -75,36 +68,50 @@ export default function StandingsPanel({ maxResults }: StandingsPanelProps) {
       <ul className="space-y-2">
         {data.topGuesses
           .slice(0, maxResults ?? data.topGuesses.length)
-          .map(({ id, user, guess, scorePercent }, idx) => (
-            <li
-              key={id}
-              className={`flex justify-between items-center border-b border-gray-100 pb-1 px-2 rounded-lg transition-all duration-200 ${getBgClass(
-                idx
-              )} ${
-                idx < 3 ? "scale-105 shadow" : "hover:bg-blue-100/60"
-              } animate-bounce-in`}
-              style={getLiStyle(idx)}
-            >
-              <div className="flex items-center">
-                {getPlaceIndicator(idx)}
-                <span className="font-playful font-medium text-base md:text-lg">
-                  {user}
-                </span>
-                <span className="mx-1 text-gray-400 font-light">:</span>
-                <span className="font-playful text-base md:text-lg">
-                  {guess}
-                </span>
-              </div>
-              <div
-                className={`font-extrabold text-lg md:text-xl drop-shadow-sm ${getScoreColor(
-                  scorePercent
-                )}`}
-                style={idx === 0 ? { textShadow: "0 0 6px #ffe066" } : {}}
+          .map(({ id, user, guess, scorePercent }, idx) => {
+            // Use color pair based on id+user+guess for consistency
+            const { pastel, strong } = getRandomColorPair(id + user + guess);
+            return (
+              <li
+                key={id}
+                className={`grid grid-cols-4 gap-2 items-center border-b border-gray-100 pb-1 px-2 rounded-lg transition-all duration-200 animate-bounce-in ${
+                  idx < 3 ? "scale-105 shadow" : "hover:bg-blue-100/60"
+                }`}
+                style={{ background: pastel, ...getLiStyle(idx) }}
               >
-                {scorePercent.toFixed(2)}%
-              </div>
-            </li>
-          ))}
+                <div className="col-span-1 flex items-center min-w-0">
+                  {getPlaceIndicator(idx)}
+                  <span
+                    className="font-playful font-semibold text-base md:text-lg"
+                    style={{ color: strong }}
+                  >
+                    {user}
+                  </span>
+                </div>
+                <div className="col-span-2 flex items-center min-w-0">
+                  <span
+                    className="m-auto font-playful text-base md:text-lg font-light"
+                    style={{ color: strong }}
+                  >
+                    {guess}
+                  </span>
+                </div>
+                <div
+                  className={`col-span-1 flex justify-end font-extrabold text-lg md:text-xl drop-shadow-sm ${getScoreColor(
+                    scorePercent
+                  )}`}
+                  style={{
+                    textShadow:
+                      idx === 0
+                        ? "0 0 6px #ffe066, 0 1px 4px rgba(0,0,0,0.13), 0 0px 1px rgba(0,0,0,0.10)"
+                        : "0 1px 4px rgba(0,0,0,0.13), 0 0px 1px rgba(0,0,0,0.10)",
+                  }}
+                >
+                  {scorePercent.toFixed(2)}%
+                </div>
+              </li>
+            );
+          })}
       </ul>
     </div>
   );
