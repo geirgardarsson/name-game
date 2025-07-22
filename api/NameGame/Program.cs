@@ -8,15 +8,6 @@ var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 var configuration = builder.Configuration;
 
-var corsOrigins = configuration.GetValue<string>("CORS_ORIGINS_CSV")?.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
-services.AddCors(options =>
-{
-    options.AddDefaultPolicy(builder =>
-        builder.WithOrigins(corsOrigins)
-                .AllowAnyMethod()
-                .AllowAnyHeader());
-});
-
 // Add services for controllers
 services
     .AddControllers()
@@ -39,11 +30,14 @@ services.AddSwaggerGen(c =>
         Version = "v1 "
     }));
 
-builder.Services.AddCors(options => options
-    .AddDefaultPolicy(policy => policy
-        .WithOrigins("http://localhost:5173") // frontend dev server (Vite default)
-        .AllowAnyHeader()
-        .AllowAnyMethod()));
+var corsOrigins = configuration.GetValue<string>("CORS_ORIGINS_CSV")?.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+        builder.WithOrigins(corsOrigins)
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+});
 
 var app = builder.Build();
 
