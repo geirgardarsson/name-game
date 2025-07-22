@@ -12,7 +12,7 @@ export default function GuessStream({ maxGuesses = 50 }: GuessStreamProps) {
   } = useGame();
 
   const wrapperClass =
-    "m-auto bg-white rounded-xl shadow p-4 w-full max-w-xl overflow-y-hidden h-full";
+    "m-auto bg-white rounded-xl shadow p-2 w-full max-w-xl overflow-y-hidden h-full";
 
   if (error) {
     console.error("Error loading guesses:", error);
