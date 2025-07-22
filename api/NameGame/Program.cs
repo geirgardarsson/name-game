@@ -8,6 +8,15 @@ var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 var configuration = builder.Configuration;
 
+var corsOrigins = configuration.GetValue<string>("CORS_ORIGINS_CSV")?.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+        builder.WithOrigins(corsOrigins)
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+});
+
 // Add services for controllers
 services
     .AddControllers()
