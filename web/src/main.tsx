@@ -12,6 +12,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<GamePrompt />} />
+        <Route path="/play" element={<GamePrompt />} />
         <Route path="/display" element={<PrepareGameDisplay />} />
         <Route path="/display/:gameId" element={<GameDisplay />} />
         <Route path="/play/:gameId" element={<ParticipantView />} />

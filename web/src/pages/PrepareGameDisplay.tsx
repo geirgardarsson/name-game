@@ -34,10 +34,10 @@ export default function PrepareGameDisplay() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-yellow-100 to-pink-200">
-      <h1 className="text-3xl font-bold mb-4">Enter game code</h1>
+      <h1 className="text-3xl font-bold mb-4">Sláðu inn kóða</h1>
       <div className="flex gap-2">
         <GameCodeInput value={gameCode} onChange={setGameCode} />
-        <Button onClick={() => handleSubmit()}>Join Game</Button>
+        <Button onClick={() => handleSubmit()}>Áfram</Button>
       </div>
     </div>
   );

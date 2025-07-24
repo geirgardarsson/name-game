@@ -35,7 +35,9 @@ export default function GuessStream({ maxGuesses = 50 }: GuessStreamProps) {
 
   return (
     <div className={wrapperClass}>
-      <h2 className="text-xl font-semibold mb-2">Recent Guesses</h2>
+      <h2 className="text-xl font-bold mb-4 text-center text-gray-700">
+        Nýjustu gisk
+      </h2>
       <ul className="space-y-1 overflow-x-hidden">
         {[...data.slice(0, maxGuesses)].map(
           ({ id, user, guess, scorePercent }) => {

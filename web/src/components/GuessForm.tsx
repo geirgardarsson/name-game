@@ -148,7 +148,7 @@ export default function GuessForm({
           value={guess}
           onChange={(e) => setGuess(e.target.value)}
           onKeyDown={handleInputKeyDown}
-          placeholder="Your guess"
+          placeholder="Giskið þitt"
           className="pr-10" // add right padding for the icon button
           autoComplete="off"
         />
@@ -180,7 +180,7 @@ export default function GuessForm({
         )}
       </div>
       <Button type="submit" disabled={disabled}>
-        Guess
+        Giska
       </Button>
     </form>
   );

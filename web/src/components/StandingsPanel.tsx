@@ -63,8 +63,10 @@ export default function StandingsPanel({ maxResults }: StandingsPanelProps) {
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-4 pb-2 w-full max-w-xl">
-      <h2 className="text-xl font-semibold mb-2">Top Guesses</h2>
+    <div className="bg-white rounded-xl shadow-lg px-4 py-2 w-full max-w-xl">
+      <h2 className="text-xl font-bold mb-4 text-center text-gray-700">
+        Topp Gisk
+      </h2>
       <ul className="space-y-2">
         {data.topGuesses
           .slice(0, maxResults ?? data.topGuesses.length)

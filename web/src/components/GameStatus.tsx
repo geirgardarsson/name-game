@@ -5,9 +5,9 @@ import { useWindowSize } from "react-use";
 import { QRCode } from "./QRCode";
 
 const statusLabels: Record<string, string> = {
-  Setup: "Waiting for game to start...",
-  Active: "Game in progress!",
-  Finished: "Game finished!",
+  Setup: "Leikur ekki hafinn...",
+  Active: "Leikur í gangi!",
+  Finished: "Leik lokið!",
 };
 
 interface GameStatusProps {
@@ -41,14 +41,13 @@ export default function GameStatus({ displayQR = false }: GameStatusProps) {
             zIndex: 50,
           }}
         />
-        <div className="whitespace-nowrap text-3xl sm:text-4xl font-extrabold text-green-600 drop-shadow mb-4 animate-bounce">
-          🎉 Winner: {data.winner.winner} 🎉
+        <div className="whitespace-nowrap text-2xl sm:text-4xl font-extrabold text-green-600 drop-shadow mb-4">
+          🎉 Sigurvegari: {data.winner.winner} 🎉
         </div>
-        <div className="text-3xl font-bold text-blue-500 mb-2 animate-pulse">
-          Correct Answer:{" "}
-          <span className="underline">{data.winner.answer}</span>
+        <div className="text-2xl font-bold text-green-600 mb-2">Nafnið er:</div>
+        <div className="font-playful text-4xl my-8 font-semibold animate-bounce">
+          💖 {data.winner.answer} 💖
         </div>
-        <div className="text-xl text-gray-700 mt-4">Game finished!</div>
       </div>
     );
   }

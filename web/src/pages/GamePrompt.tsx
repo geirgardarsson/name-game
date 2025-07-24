@@ -19,7 +19,8 @@ export default function GamePrompt() {
     }
   }, [data, navigate]);
 
-  const handleSubmit = () => {
+  const handleSubmit = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     if (!code.trim()) return;
     joinGame(code);
   };
@@ -27,13 +28,13 @@ export default function GamePrompt() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen gap-4 bg-gradient-to-br from-purple-100 to-orange-200">
       {error && <Toast message={error} color="red" />}
-      <h1 className="text-3xl font-bold">Enter Game Code</h1>
-      <div className="flex gap-2">
+      <h1 className="text-3xl font-bold">Sláðu inn kóða</h1>
+      <form className="flex gap-2" onSubmit={handleSubmit}>
         <GameCodeInput value={code} onChange={setCode} />
-        <Button onClick={handleSubmit} disabled={loading}>
-          {loading ? <Spinner size={20} /> : "Join"}
+        <Button type="submit" disabled={loading}>
+          {loading ? <Spinner size={20} /> : "Áfram"}
         </Button>
-      </div>
+      </form>
     </div>
   );
 }

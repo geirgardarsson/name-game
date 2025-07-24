@@ -37,7 +37,7 @@ export default function ParticipantView() {
               <StandingsPanel maxResults={5} />
               <GuessStream maxGuesses={maxGuesses} />
               <GuessForm gameId={gameId} username={username} />
-              <div className="flex items-center ml-2 text-lg font-bold">
+              <div className="flex items-center text-lg font-bold">
                 <div
                   className="ml-2 text-lg font-bold underline cursor-pointer inline-block hover:text-blue-700"
                   title="Click to edit your name"
