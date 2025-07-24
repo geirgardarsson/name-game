@@ -18,6 +18,9 @@ export default function GuessForm({
 }: GuessFormProps) {
   const [guess, setGuess] = useState("");
   const [namesList, setNamesList] = useState<string[]>([]);
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [activeSuggestion, setActiveSuggestion] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const { status } = useGame();
@@ -36,6 +39,30 @@ export default function GuessForm({
     }
     loadNames();
   }, []);
+
+  // Autofill logic: update suggestions when guess changes
+  useEffect(() => {
+    const parts = guess.split(" ");
+    const current = parts[parts.length - 1];
+    if (current.length === 0) {
+      setSuggestions([]);
+      setShowSuggestions(false);
+      setActiveSuggestion(-1);
+      return;
+    }
+    const filtered = namesList.filter((name) =>
+      name.toLowerCase().startsWith(current.toLowerCase())
+    );
+    const limited = filtered.slice(0, 8); // limit to 8 suggestions
+    setSuggestions(limited);
+    // Close dropdown if only one result and it matches input exactly
+    if (limited.length === 1 && limited[0].toLowerCase() === current.toLowerCase()) {
+      setShowSuggestions(false);
+    } else {
+      setShowSuggestions(limited.length > 0);
+    }
+    setActiveSuggestion(-1);
+  }, [guess, namesList]);
 
   useEffect(() => {
     if (guess === "" && inputRef.current) {
@@ -64,6 +91,38 @@ export default function GuessForm({
     const shuffled = namesList.slice().sort(() => 0.5 - Math.random());
     setGuess(`${shuffled[0]} ${shuffled[1]}`);
     if (inputRef.current) inputRef.current.focus();
+    setShowSuggestions(false);
+  }
+
+  function handleSuggestionClick(suggestion: string) {
+    const parts = guess.split(" ");
+    parts[parts.length - 1] = suggestion;
+    const newGuess = parts.join(" ") + " "; // add space for next name
+    setGuess(newGuess);
+    setShowSuggestions(false);
+    setActiveSuggestion(-1);
+    if (inputRef.current) inputRef.current.focus();
+  }
+
+  function handleInputKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (!showSuggestions || suggestions.length === 0) return;
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setActiveSuggestion((prev) =>
+        prev < suggestions.length - 1 ? prev + 1 : 0
+      );
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setActiveSuggestion((prev) =>
+        prev > 0 ? prev - 1 : suggestions.length - 1
+      );
+    } else if (e.key === "Enter" && activeSuggestion >= 0) {
+      e.preventDefault();
+      handleSuggestionClick(suggestions[activeSuggestion]);
+    } else if (e.key === "Escape") {
+      setShowSuggestions(false);
+      setActiveSuggestion(-1);
+    }
   }
 
   const disabled = isLoading || !data || data.status !== "Active";
@@ -75,14 +134,17 @@ export default function GuessForm({
         submitGuess();
       }}
       className="flex gap-2"
+      autoComplete="off"
     >
       <div className="relative flex-1">
         <Input
           inputRef={inputRef}
           value={guess}
           onChange={(e) => setGuess(e.target.value)}
+          onKeyDown={handleInputKeyDown}
           placeholder="Your guess"
           className="pr-10" // add right padding for the icon button
+          autoComplete="off"
         />
         <button
           type="button"
@@ -93,6 +155,23 @@ export default function GuessForm({
         >
           <GiInvertedDice6 size={24} />
         </button>
+        {/* Autofill dropdown */}
+        {showSuggestions && suggestions.length > 0 && (
+          <ul className="absolute z-10 left-0 right-0 mt-1 bg-white border border-gray-200 rounded shadow-lg max-h-48 overflow-y-auto">
+            {suggestions.map((s, i) => (
+              <li
+                key={s}
+                className={`px-3 py-2 cursor-pointer hover:bg-gray-100 ${
+                  i === activeSuggestion ? "bg-gray-200" : ""
+                }`}
+                onMouseDown={() => handleSuggestionClick(s)}
+                onMouseEnter={() => setActiveSuggestion(i)}
+              >
+                {s}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
       <Button type="submit" disabled={disabled}>
         Guess
