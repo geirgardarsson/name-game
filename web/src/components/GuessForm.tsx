@@ -56,7 +56,10 @@ export default function GuessForm({
     const limited = filtered.slice(0, 8); // limit to 8 suggestions
     setSuggestions(limited);
     // Close dropdown if only one result and it matches input exactly
-    if (limited.length === 1 && limited[0].toLowerCase() === current.toLowerCase()) {
+    if (
+      limited.length === 1 &&
+      limited[0].toLowerCase() === current.toLowerCase()
+    ) {
       setShowSuggestions(false);
     } else {
       setShowSuggestions(limited.length > 0);
@@ -101,7 +104,10 @@ export default function GuessForm({
     setGuess(newGuess);
     setShowSuggestions(false);
     setActiveSuggestion(-1);
-    if (inputRef.current) inputRef.current.focus();
+    // Use setTimeout to ensure focus after click event completes
+    setTimeout(() => {
+      if (inputRef.current) inputRef.current.focus();
+    }, 0);
   }
 
   function handleInputKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
