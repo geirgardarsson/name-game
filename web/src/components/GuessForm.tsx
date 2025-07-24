@@ -54,6 +54,7 @@ export default function GuessForm({
       console.error("Failed to submit guess", res.statusText);
     } else {
       setGuess("");
+      if (inputRef.current) inputRef.current.focus();
       if (onGuessSubmitted) onGuessSubmitted();
     }
   }
@@ -62,6 +63,7 @@ export default function GuessForm({
     if (namesList.length < 2) return;
     const shuffled = namesList.slice().sort(() => 0.5 - Math.random());
     setGuess(`${shuffled[0]} ${shuffled[1]}`);
+    if (inputRef.current) inputRef.current.focus();
   }
 
   const disabled = isLoading || !data || data.status !== "Active";
@@ -81,12 +83,10 @@ export default function GuessForm({
           onChange={(e) => setGuess(e.target.value)}
           placeholder="Your guess"
           className="pr-10" // add right padding for the icon button
-          disabled={disabled}
         />
         <button
           type="button"
           onClick={randomizeGuess}
-          disabled={disabled}
           tabIndex={-1}
           className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-gray-700 hover:text-gray-800 disabled:text-gray-300 bg-transparent border-none focus:outline-none"
           aria-label="Randomize guess"
