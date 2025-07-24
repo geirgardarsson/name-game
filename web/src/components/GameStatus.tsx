@@ -60,7 +60,7 @@ export default function GameStatus({ displayQR = false }: GameStatusProps) {
       "animate-pulse text-xl font-bold text-blue-500 drop-shadow flex flex-col items-center text-center";
   } else if (data.status === "Active") {
     statusClass =
-      "animate-pop text-2xl font-extrabold text-green-500 drop-shadow-lg flex flex-col items-center";
+      "animate-pop text-3xl font-extrabold text-green-500 drop-shadow-lg flex flex-col items-center";
   } else {
     statusClass = "text-lg font-semibold flex flex-col items-center";
   }
@@ -69,29 +69,16 @@ export default function GameStatus({ displayQR = false }: GameStatusProps) {
     <div className={statusClass + " flex flex-col items-center"}>
       {text}
       {displayQR && gameId && (
-        <div className="mt-4 flex flex-col items-center">
-          <div className="mb-2 text-base font-medium">
-            Game Code: {data.gameHandle}
-          </div>
+        <div className="mt-16 mb-8 p-8 bg-white rounded-xl flex flex-col items-center">
           <QRCode
             value={`${window.location.origin}/play/${gameId}`}
-            size={120}
+            size={240}
           />
+          <div className="mt-8 text-medium font-semibold text-gray-700">
+            Kóði: {data.gameHandle.toUpperCase()}
+          </div>
         </div>
       )}
     </div>
   );
 }
-
-// Add custom pop animation for Active state
-// Add this to your global CSS (e.g., index.css or tailwind.config if using Tailwind)
-// @layer utilities {
-//   .animate-pop {
-//     animation: pop 1s cubic-bezier(0.23, 1, 0.32, 1) infinite alternate;
-//   }
-//   @keyframes pop {
-//     0% { transform: scale(1); }
-//     50% { transform: scale(1.12) rotate(-2deg); }
-//     100% { transform: scale(1.05) rotate(2deg); }
-//   }
-// }
