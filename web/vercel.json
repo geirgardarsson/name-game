@@ -1,0 +1,20 @@
+{
+    "rewrites": [
+        {
+            "source": "/display",
+            "destination": "/index.html"
+        },
+        {
+            "source": "/display/:gameId",
+            "destination": "/index.html"
+        },
+        {
+            "source": "/play/:gameId",
+            "destination": "/index.html"
+        },
+        {
+            "source": "/",
+            "destination": "/index.html"
+        }
+    ]
+}
